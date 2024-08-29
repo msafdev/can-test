@@ -60,6 +60,8 @@ interface Game {
   }>;
 }
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+
 export const useGamesStore = defineStore("games", {
   state: () => ({
     games: [] as Game[],
@@ -72,7 +74,7 @@ export const useGamesStore = defineStore("games", {
     async fetchGames(page: number = 1) {
       try {
         const { data } = await axios.get<{ results: Game[]; count: number }>(
-          `https://api.rawg.io/api/games?key=7bd4b0ace53f40b0adcda5a31536abb2&page_size=12&page=${page}`
+          `https://api.rawg.io/api/games?key=${API_KEY}&page_size=12&page=${page}`
         );
         this.games = data.results;
         this.totalGames = data.count;
@@ -83,7 +85,7 @@ export const useGamesStore = defineStore("games", {
     async searchGames(query: string, page: number = 1) {
       try {
         const { data } = await axios.get<{ results: Game[]; count: number }>(
-          `https://api.rawg.io/api/games?key=7bd4b0ace53f40b0adcda5a31536abb2&search=${query}&page_size=12&page=${page}`
+          `https://api.rawg.io/api/games?key=${API_KEY}&search=${query}&page_size=12&page=${page}`
         );
         this.games = data.results;
         this.totalGames = data.count;
@@ -95,7 +97,7 @@ export const useGamesStore = defineStore("games", {
       if (!this.games.find((game) => game.id === id)) {
         try {
           const { data } = await axios.get<Game>(
-            `https://api.rawg.io/api/games/${id}?key=7bd4b0ace53f40b0adcda5a31536abb2`
+            `https://api.rawg.io/api/games/${id}?key=${API_KEY}`
           );
           this.games.push(data);
         } catch (error) {
@@ -109,7 +111,7 @@ export const useGamesStore = defineStore("games", {
     async fetchGenres() {
       try {
         const { data } = await axios.get<{ results: Genre[] }>(
-          `https://api.rawg.io/api/genres?key=7bd4b0ace53f40b0adcda5a31536abb2`
+          `https://api.rawg.io/api/genres?key=${API_KEY}`
         );
         this.genres = data.results;
       } catch (error) {
@@ -119,7 +121,7 @@ export const useGamesStore = defineStore("games", {
     async fetchGamesByGenre(genreId: number, page: number = 1) {
       try {
         const { data } = await axios.get<{ results: Game[]; count: number }>(
-          `https://api.rawg.io/api/games?key=7bd4b0ace53f40b0adcda5a31536abb2&genres=${genreId}&page_size=24&page=${page}`
+          `https://api.rawg.io/api/games?key=${API_KEY}&genres=${genreId}&page_size=24&page=${page}`
         );
         this.games = data.results;
         this.totalGames = data.count;
@@ -130,7 +132,7 @@ export const useGamesStore = defineStore("games", {
     async fetchTags() {
       try {
         const { data } = await axios.get<{ results: Tag[] }>(
-          `https://api.rawg.io/api/tags?key=7bd4b0ace53f40b0adcda5a31536abb2`
+          `https://api.rawg.io/api/tags?key=${API_KEY}`
         );
         this.tags = data.results;
       } catch (error) {
@@ -140,7 +142,7 @@ export const useGamesStore = defineStore("games", {
     async fetchGamesByTag(tagId: number, page: number = 1) {
       try {
         const { data } = await axios.get<{ results: Game[]; count: number }>(
-          `https://api.rawg.io/api/games?key=7bd4b0ace53f40b0adcda5a31536abb2&tags=${tagId}&page_size=24&page=${page}`
+          `https://api.rawg.io/api/games?key=${API_KEY}&tags=${tagId}&page_size=24&page=${page}`
         );
         this.games = data.results;
         this.totalGames = data.count;
@@ -151,7 +153,7 @@ export const useGamesStore = defineStore("games", {
     async fetchStores() {
       try {
         const { data } = await axios.get<{ results: Store[] }>(
-          `https://api.rawg.io/api/stores?key=7bd4b0ace53f40b0adcda5a31536abb2`
+          `https://api.rawg.io/api/stores?key=${API_KEY}`
         );
         this.stores = data.results;
       } catch (error) {
@@ -161,7 +163,7 @@ export const useGamesStore = defineStore("games", {
     async fetchGamesByStore(storeId: number, page: number = 1) {
       try {
         const { data } = await axios.get<{ results: Game[]; count: number }>(
-          `https://api.rawg.io/api/games?key=7bd4b0ace53f40b0adcda5a31536abb2&stores=${storeId}&page_size=24&page=${page}`
+          `https://api.rawg.io/api/games?key=${API_KEY}&stores=${storeId}&page_size=24&page=${page}`
         );
         this.games = data.results;
         this.totalGames = data.count;
