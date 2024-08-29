@@ -2,7 +2,7 @@
     <div class="border-2 overflow-hidden w-full relative rounded-xl group cursor-pointer" @click="goToGameDetail">
         <img :src="game.background_image" :alt="game.name" class="w-full h-auto aspect-[9/12] object-cover" />
         <div
-            class="absolute -bottom-full group-hover:bottom-0 transition-all duration-300 ease-in-out bg-card text-card-foreground w-full backdrop-blur p-3">
+            class="absolute md:-bottom-full group-hover:bottom-0 transition-all duration-300 ease-in-out bg-card text-card-foreground w-full backdrop-blur p-3">
             <h2 class="text-sm font-semibold">{{ game.name }}</h2>
             <p class="text-xs font-medium text-muted-foreground">{{ game.metacritic }}</p>
         </div>
