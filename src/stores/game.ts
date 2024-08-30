@@ -38,6 +38,11 @@ interface Store {
   image_background: string;
 }
 
+interface ScreenShot {
+  id: number;
+  image: string;
+}
+
 interface Game {
   id: number;
   name: string;
@@ -69,6 +74,7 @@ export const useGamesStore = defineStore("games", {
     genres: [] as Genre[],
     tags: [] as Tag[],
     stores: [] as Store[],
+    screenshots: [] as ScreenShot[],
   }),
   actions: {
     async fetchGames(page: number = 1) {
@@ -117,6 +123,19 @@ export const useGamesStore = defineStore("games", {
       } catch (error) {
         console.error("Failed to fetch genres:", error);
       }
+    },
+    async fetchScreenshots(id: number) {
+      try {
+        const { data } = await axios.get<{ results: ScreenShot[] }>(
+          `https://api.rawg.io/api/games/${id}/screenshots?key=${API_KEY}`
+        );
+        this.screenshots = data.results; // Save the array of screenshots
+      } catch (error) {
+        console.error("Failed to fetch screenshots:", error);
+      }
+    },
+    getScreenshotById(id: number): ScreenShot | undefined {
+      return this.screenshots.find((screenshot, index) => index === id);
     },
     async fetchGamesByGenre(genreId: number, page: number = 1) {
       try {

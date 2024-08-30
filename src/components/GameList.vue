@@ -1,20 +1,19 @@
 <template>
     <div class="max-w-6xl mx-auto mb-8">
-        
+
         <h1 class="text-2xl mt-8 mb-4 font-semibold">
             {{ searchQuery ? `Search results for: "${searchQuery}"` : 'Popular Games' }}
         </h1>
 
-        
+
         <div v-if="searchQuery === ''">
-            
             <div v-if="games.length"
                 class="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-8">
                 <GameCard v-for="game in games" :key="game.id" :game="game" />
             </div>
             <p v-else>No games found.</p>
 
-            
+
             <div class="flex items-center justify-center mt-4 gap-x-3" v-if="totalPages > 1">
                 <button @click="prevPage" :disabled="currentPage === 1"
                     class="rounded flex items-center justify-center bg-primary text-primary-foreground size-8">
@@ -28,16 +27,16 @@
             </div>
         </div>
 
-        
+
         <div v-else>
-            
+
             <div v-if="games.length"
                 class="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mb-8">
                 <GameCard v-for="game in games" :key="game.id" :game="game" />
             </div>
         </div>
 
-        
+
         <div class="mt-8" v-if="genres.length">
             <h2 class="text-xl font-semibold mb-4">Genres</h2>
             <div class="flex flex-wrap gap-2">
@@ -48,7 +47,7 @@
             </div>
         </div>
 
-        
+
         <div class="mt-8" v-if="tags.length">
             <h2 class="text-xl font-semibold mb-4">Tags</h2>
             <div class="flex flex-wrap gap-2">
@@ -59,7 +58,7 @@
             </div>
         </div>
 
-        
+
         <div class="mt-8" v-if="stores.length">
             <h2 class="text-xl font-semibold mb-4">Stores</h2>
             <div class="flex flex-wrap gap-2">
@@ -96,33 +95,33 @@ export default defineComponent({
         const store = useGamesStore();
 
         const currentPage = ref(1);
-        const gamesPerPage = 12; 
+        const gamesPerPage = 12;
 
-        
+
         const games = computed(() => store.games);
         const genres = computed(() => store.genres);
         const tags = computed(() => store.tags);
         const stores = computed(() => store.stores);
         const totalPages = computed(() => Math.ceil(store.totalGames / gamesPerPage));
 
-        
+
         watch(
             () => props.searchQuery,
             async (newQuery) => {
-                currentPage.value = 1; 
+                currentPage.value = 1;
                 if (newQuery) {
                     await store.searchGames(newQuery, currentPage.value);
                 } else {
                     await store.fetchGames(currentPage.value);
-                    store.fetchGenres();  
-                    store.fetchTags();    
-                    store.fetchStores();  
+                    store.fetchGenres();
+                    store.fetchTags();
+                    store.fetchStores();
                 }
             },
             { immediate: true }
         );
 
-        
+
         watch(currentPage, async (newPage) => {
             if (props.searchQuery) {
                 await store.searchGames(props.searchQuery, newPage);
@@ -156,7 +155,7 @@ export default defineComponent({
         };
 
 
-        
+
         onMounted(() => {
             if (!props.searchQuery) {
                 store.fetchGenres();
